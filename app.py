@@ -1,16 +1,31 @@
-from flask import Flask
-# from 'Database/events.py' import events
+from flask import (
+    Flask, 
+    jsonify
+)
+from events import events
 
-app = Flask(__name__)
+# Function that create the app 
+def create_app(test_config=None ):
+    # create and configure the app
+    app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return 'Hello World'
+    # Simple route
+    @app.route('/')
+    def hello_world(): 
+        return jsonify({
+           "status": "success",
+            "message": "Hello World!"
+        }) 
+    
+    
+    @app.route('/events')
+    def hello_events(): 
+        return jsonify(events) 
+     
+    return app # do not forget to return the app
 
-@app.route('/<name>')
-def index():
-    return "Hi "
-
+APP = create_app()
 
 if __name__ == '__main__':
-    app.run()
+    # APP.run(host='0.0.0.0', port=5000, debug=True)
+    APP.run(debug=True)
